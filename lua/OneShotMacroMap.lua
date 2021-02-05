@@ -15,7 +15,7 @@ function mod:new(targetMacroName)
     return object
 end
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else

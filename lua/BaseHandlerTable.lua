@@ -1,7 +1,7 @@
 local mod = { }
 
 function mod:registerHandler(index, handlerObject, handlerMethod)
-    if (self[index])
+    if self[index]
     then
 	if (self[index].mainMethod)
 	then
@@ -21,9 +21,9 @@ function mod:registerHandler(index, handlerObject, handlerMethod)
 end
 
 function mod:registerHandlerOverride(index, handlerObject, handlerMethod)
-    if (self[index])
+    if self[index]
     then
-	if (self[index].overrideMethod)
+	if self[index].overrideMethod
 	then
 	    table.insert(self[index].overrideMethod, 1, handlerMethod)
 	    table.insert(self[index].overrideObject, 1, handlerObject)
@@ -42,15 +42,15 @@ end
 
 function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
     local handler = self[index]
-    if (handler)
+    if handler
     then
 	local nextOverride = true
 
-	if (handler.overrideMethod)
+	if handler.overrideMethod
 	then
 	    local i = 1
 
-	    while (handler.overrideMethod[i] and handler.overrideMethod[i](handler.overrideObject[i], arg1, arg2, arg3, arg4, arg5))
+	    while handler.overrideMethod[i] and handler.overrideMethod[i](handler.overrideObject[i], arg1, arg2, arg3, arg4, arg5)
 	    do
 		i = i + 1;
 	    end
@@ -58,13 +58,13 @@ function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
 	    nextOverride = not handler.overrideMethod[i]
 	end
 
-	if (nextOverride)
+	if nextOverride
 	then
-	    if (handler.mainMethod)
+	    if handler.mainMethod
 	    then
 		local i = 1
 
-		while (handler.mainMethod[i])
+		while handler.mainMethod[i]
 		do
 		    handler.mainMethod[i](handler.mainObject[i], arg1, arg2, arg3, arg4, arg5)
 		    i = i + 1
@@ -84,7 +84,7 @@ function mod:new(obj)
     return obj
 end
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else

@@ -15,7 +15,7 @@ end
 mod:registerHandler(GHubDefs.MOUSE_BUTTON_PRESSED,  mod, mod.onButtonPressedEvent)
 mod:registerHandler(GHubDefs.MOUSE_BUTTON_RELEASED, mod, mod.onButtonReleasedEvent)
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else

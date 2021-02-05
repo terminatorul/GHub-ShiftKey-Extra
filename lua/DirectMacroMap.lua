@@ -6,7 +6,7 @@ function mod:onButtonPressed()
 end
 
 function mod:onButtonReleased()
-    if (self.macroRunning)
+    if self.macroRunning
     then
 	ReleaseMacro(self.macroName)
 	self.macroRunning = false
@@ -14,7 +14,7 @@ function mod:onButtonReleased()
 end
 
 function mod:onControllingModifierReleased()
-    if (self.macroRunning)
+    if self.macroRunning
     then
 	ReleaseMacro(self.macroName)
 	self.macroRunning = false
@@ -32,7 +32,7 @@ function mod:new(targetMacroName)
     return object
 end
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else

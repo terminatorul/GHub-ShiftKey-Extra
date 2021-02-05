@@ -6,7 +6,7 @@ function mod:onButtonPressed()
 end
 
 function mod:onButtonReleased()
-    if (self.keyDown)
+    if self.keyDown
     then
 	ReleaseKey(self.keyScanCode)
 	self.keyDown = false
@@ -14,7 +14,7 @@ function mod:onButtonReleased()
 end
 
 function mod:onControllingModifierReleased()
-    if (self.keyDown)
+    if self.keyDown
     then
 	ReleaseKey(self.keyScanCode)
 	self.keyDown = false
@@ -32,13 +32,13 @@ function mod:registerWith(buttonEventHandler, targetButton)
     buttonEventHandler.buttonDownEventTable:registerHandler(targetButton, self, self.onButtonPressed)
     buttonEventHandler.buttonUpEventTable:registerHandler(targetButton, self, self.onButtonReleased)
 
-    if (buttonEventHandler.transitionEventTable)
+    if buttonEventHandler.transitionEventTable
     then
 	buttonEventHandler.transitionEventTable:registerHandler(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onControllingModifierReleased)
     end
 end
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else

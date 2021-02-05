@@ -6,7 +6,7 @@ function mod:onShiftKeyPressed()
 end
 
 function mod:onShiftKeyReleased()
-    if (self.shifted)
+    if self.shifted
     then
 	self.shifted = false
 	self.transitionEventTable:invokeHandler(GHubDefs.MOUSE_BUTTON_RELEASED)
@@ -14,7 +14,7 @@ function mod:onShiftKeyReleased()
 end
 
 function mod:onControllingModifierReleased()
-    if (self.shifted)
+    if self.shifted
     then
 	self.shifted = false
 	self.transitionEventTable:invokeHandler(GHubDefs.MOUSE_BUTTON_RELEASED)
@@ -24,7 +24,7 @@ end
 function mod:onButtonPressedEventOverride(button)
     local invokeBaseHandler = true
 
-    if (self.shifted)
+    if self.shifted
     then
 	invokeBaseHandler = not self.buttonDownEventTable:invokeHandler(button)
     end
@@ -35,7 +35,7 @@ end
 function mod:onButtonReleasedEventOverride(button)
     local invokeBaseHandler = true
 
-    if (self.shifted)
+    if self.shifted
     then
 	invokeBaseHandler = not self.buttonUpEventTable:invokeHandler(button)
     end
@@ -50,7 +50,7 @@ function mod:registerWith(eventCategoryHandler, buttonEventHandler, modifierButt
     buttonEventHandler.buttonDownEventTable:registerHandler(modifierButton, self, self.onShiftKeyPressed)
     buttonEventHandler.buttonUpEventTable:registerHandler(modifierButton, self, self.onShiftKeyReleased)
 
-    if (buttonEventHandler.transitionEventTable)
+    if buttonEventHandler.transitionEventTable
     then
 	buttonEventHandler.transitionEventTable:registerHandler(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onControllingModifierReleased)
     end
@@ -70,7 +70,7 @@ function mod:new(obj)
     return object
 end
 
-if (_REQUIREDNAME)
+if _REQUIREDNAME
 then
     _G[_REQUIREDNAME] = mod
 else
