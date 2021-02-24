@@ -25,7 +25,7 @@ end
  - For mappings for macOS (which I use in a virtual machine), replace `DeviceMapping.lua` above with `DeviceMappingsMacOS.lua`.
 
 ## Configuration
-Open this top-level script file `DeviceMapping.lua`. In here all the mappings are created and connected to the mouse buttons. Button IDs and some key scan codes for Logitech G600 mouse are found in file `lua/GHubDefs.lua`. The pre-defined configuration looks like:
+Open this top-level script file `DeviceMapping.lua`. Although it is a script file in lua, it also works as the mouse configuration file. In here all mappings are created and connected to the mouse buttons. Mouse button IDs for Logitech G600, plus standard keyboard scan codes, are found in file `lua/GHubDefs.lua`. The pre-defined configuration looks like:
 
 ```lua
 local G_Shift_Button			  = GHubDefs.GShiftButton
