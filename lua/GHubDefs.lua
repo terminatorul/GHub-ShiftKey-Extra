@@ -14,6 +14,7 @@ local mod =
     G8  =  8,
     G9  =  9,
     G10 = 10,
+    G11 = 11,
     G12 = 12,
     G13 = 13,
     G14 = 14,
@@ -42,6 +43,15 @@ mod.FrontColumn	      = 1
 mod.MiddleFrontColumn = 2
 mod.MiddleBackColumn  = 3
 mod.BackColumn	      = 4
+
+mod.MouseButtonLocation =
+{
+    Left    = 1,
+    Middle  = 2,
+    Right   = 3,
+    X1	    = 4,
+    X2	    = 5
+}
 
 mod.KeyPad =
 {

@@ -1,6 +1,6 @@
 local mod = { sequenceInProgress = false }
 
--- Release both Tab and Alt keys to end the Alt+Tab sequence (or another similar sequence)
+-- Release both Tab and Alt keys at the end of the Alt+Tab (or similar) sequence
 function mod:stopSequence()
     if self.sequenceInProgress
     then
@@ -18,7 +18,7 @@ function mod:stopSequence()
     end
 end
 
--- Trigger the first Alt and Tab key press in the Alt+Tab sequence (or another similar sequence)
+-- Trigger the first Alt and Tab key press in the Alt+Tab (or similar) sequence
 function mod:startSequence(oneShotAdvance)
     if not self.sequenceInProgres and not mod.sequenceInProgress
     then
