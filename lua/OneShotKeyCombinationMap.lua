@@ -18,6 +18,10 @@ function mod:onButtonPressed()
     ReleaseKey(self.modifierScanCode)
 end
 
+function mod:registerWith(buttonEventHandler, targetButton)
+    buttonEventHandler.buttonDownEventTable:registerHandler(targetButton, self, self.onButtonPressed)
+end
+
 function mod:new(targetModifierScanCode, targetKeyScanCode, targetSecondScanCode)
     local object = { }
 
@@ -35,10 +39,6 @@ function mod:new(targetModifierScanCode, targetKeyScanCode, targetSecondScanCode
     setmetatable(object, self)
     self.__index = self
     return object
-end
-
-function mod:registerWith(buttonEventHandler, targetButton)
-    buttonEventHandler.buttonDownEventTable:registerHandler(targetButton, self, self.onButtonPressed)
 end
 
 if _REQUIREDNAME

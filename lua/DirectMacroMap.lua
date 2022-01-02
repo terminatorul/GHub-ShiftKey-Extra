@@ -1,8 +1,11 @@
 local mod = { }
 
 function mod:onButtonPressed()
-    PressMacro(self.macroName)
-    self.macroRunning = true
+    if not self.macroRunning
+    then
+	PressMacro(self.macroName)
+	self.macroRunning = true
+    end
 end
 
 function mod:onButtonReleased()

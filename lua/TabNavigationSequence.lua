@@ -213,6 +213,8 @@ function mod:registerWithDirectMappings(directEventHandler, buttonEventHandler, 
     directEventHandler.buttonDownEventTable:registerHandler(advanceButton, self, self.onDirectAdvanceKeyPress)
     directEventHandler.buttonUpEventTable:registerHandler(advanceButton, self, self.onDirectAdvanceKeyRelease)
 
+    buttonEventHandler.sequenceStartTable[advanceButton] = true
+
     if reverseButton
     then
 	directEventHandler.buttonUpEventTable:registerHandler(advanceButton, self, self.onDirectReverseKeyRelease)

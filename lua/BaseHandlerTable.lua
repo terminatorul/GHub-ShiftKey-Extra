@@ -50,7 +50,7 @@ function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
 	then
 	    local i = 1
 
-	    while handler.overrideMethod[i] and handler.overrideMethod[i](handler.overrideObject[i], arg1, arg2, arg3, arg4, arg5)
+	    while handler.overrideMethod[i] and handler.overrideMethod[i](handler.overrideObject[i], self.buttonStateTable, arg1, arg2, arg3, arg4, arg5)
 	    do
 		i = i + 1;
 	    end
@@ -66,7 +66,7 @@ function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
 
 		while handler.mainMethod[i]
 		do
-		    handler.mainMethod[i](handler.mainObject[i], arg1, arg2, arg3, arg4, arg5)
+		    handler.mainMethod[i](handler.mainObject[i], self.buttonStateTable, arg1, arg2, arg3, arg4, arg5)
 		    i = i + 1
 		end
 	    end
@@ -77,9 +77,10 @@ function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
     end
 end
 
-function mod:new(obj)
+function mod:new(buttonStateTable, obj)
     obj = obj or { }
     setmetatable(obj, self)
+    obj.buttonStateTable = buttonStateTable
     self.__index = self
     return obj
 end

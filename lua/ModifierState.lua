@@ -1,6 +1,18 @@
 local mod = { }
 
-function mod:onShiftKeyPressed()
+function mod:onShiftKeyPressed(buttonStateTable)
+    -- exit if any registered button is alreaady down, except buttons in the sequence start table
+    for k, v in pairs(self.buttonDownEventTable)
+    do
+	if self.buttonDownEventTable[k].overrideMethod or self.buttonDownEventTable[k].mainMethod
+	then
+	    if buttonStateTable[k] and not self.sequenceStartTable[k]
+	    then
+		return
+	    end
+	end
+    end
+
     self.shifted = true
     self.transitionEventTable:invokeHandler(GHubDefs.MOUSE_BUTTON_PRESSED)
 end
@@ -21,7 +33,7 @@ function mod:onControllingModifierReleased()
     end
 end
 
-function mod:onButtonPressedEventOverride(button)
+function mod:onButtonPressedEventOverride(buttonStateTable, button)
     local invokeBaseHandler = true
 
     if self.shifted
@@ -32,7 +44,7 @@ function mod:onButtonPressedEventOverride(button)
     return invokeBaseHandler
 end
 
-function mod:onButtonReleasedEventOverride(button)
+function mod:onButtonReleasedEventOverride(buttonStateTable, button)
     local invokeBaseHandler = true
 
     if self.shifted
@@ -44,6 +56,10 @@ function mod:onButtonReleasedEventOverride(button)
 end
 
 function mod:registerWith(eventCategoryHandler, buttonEventHandler, modifierButton)
+    self.buttonUpEventTable.buttonStateTable   = eventCategoryHandler.buttonStateTable
+    self.buttonDownEventTable.buttonStateTable = eventCategoryHandler.buttonStateTable
+    self.transitionEventTable.buttonStateTable = eventCategoryHandler.buttonStateTable
+
     eventCategoryHandler:registerHandlerOverride(GHubDefs.MOUSE_BUTTON_PRESSED,  self, self.onButtonPressedEventOverride)
     eventCategoryHandler:registerHandlerOverride(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onButtonReleasedEventOverride)
 
@@ -63,6 +79,7 @@ function mod:new(obj)
     object.buttonUpEventTable   = BaseHandlerTable:new()
     object.buttonDownEventTable = BaseHandlerTable:new()
     object.transitionEventTable = BaseHandlerTable:new()
+    object.sequenceStartTable	= { }
 
     setmetatable(object, self)
     self.__index = self
