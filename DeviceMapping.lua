@@ -30,6 +30,8 @@ local Delete_Backspace_Button		  = GHubDefs.KeyPad[GHubDefs.UpperRow ][GHubDefs.
 local Wheel_Click_Button		  = GHubDefs.MiddleButton
 local Tab_Space_Button			  = GHubDefs.KeyPad[GHubDefs.MiddleRow][GHubDefs.FrontColumn]
 local Playback_Control_Button		  = GHubDefs.KeyPad[GHubDefs.MiddleRow][GHubDefs.MiddleBackColumn]
+local Scroll_Left_and_App_Tab_Button	  = GHubDefs.KeyPad[GHubDefs.LowerRow ][GHubDefs.BackColumn]
+local Scroll_Right_and_App_Tab_Button	  = GHubDefs.KeyPad[GHubDefs.MiddleRow][GHubDefs.BackColumn]
 
 local GShiftState        = ModifierState:new()
 local SecondShiftState   = ModifierState:new()
@@ -45,9 +47,12 @@ local UndoMap	         = OneShotMacroMap:new("Ctrl+Z")
 local RedoMap	         = OneShotMacroMap:new("Ctrl+Y")
 local AltTabSequence     = TabNavigationSequence:new(GHubDefs.ScanCodes.LeftAlt,     GHubDefs.ScanCodes.LeftShift, GHubDefs.ScanCodes.Tab)
 local ControlTabSequence = TabNavigationSequence:new(GHubDefs.ScanCodes.LeftControl, GHubDefs.ScanCodes.LeftShift, GHubDefs.ScanCodes.Tab)
+local App2TabSequence	 = TabNavigationSequence:new(GHubDefs.ScanCodes.LeftGui,     GHubDefs.ScanCodes.LeftShift, GHubDefs.ScanCodes.Digit2)
 local GoBackKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftAlt,  GHubDefs.ScanCodes.Left)
 local MinimizeMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftGui,  GHubDefs.ScanCodes.Down)
+local Minimize		 = OneShotMacroMap:new("Minimize Window")
 local MaximizeMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftGui,  GHubDefs.ScanCodes.Up)
+local Maximize		 = OneShotMacroMap:new("Maximize Window")
 local DeleteKeyMap	 = DirectKeyMap:new(GHubDefs.ScanCodes.Delete)
 local BackspaceKeyMap	 = DirectKeyMap:new(GHubDefs.ScanCodes.Backspace)
 local GoUpKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftAlt,  GHubDefs.ScanCodes.Up)
@@ -57,6 +62,8 @@ local NewTabKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftContro
 local TabKeyMap		 = DirectKeyMap:new(GHubDefs.ScanCodes.Tab)
 local SpaceKeyMap	 = DirectKeyMap:new(GHubDefs.ScanCodes.Spacebar)
 local PlaybackControlMap = DirectMacroMap:new("Play Pause")
+local ScrollLeftMap	 = DirectMacroMap:new("Repeat Scroll Left")
+local ScrollRightMap	 = DirectMacroMap:new("Repeat Scroll Right")
 
 GShiftState:registerWith(DeviceEventHandler, DeviceEventHandler, GHubDefs.GShiftButton)
 SecondShiftMap:registerWith(DeviceEventHandler, Second_Shift_Button)
@@ -73,8 +80,9 @@ UndoMap:registerWith(GShiftState, Undo_and_Home_Button)
 RedoMap:registerWith(GShiftState, Redo_and_Page_Up_Button)
 AltTabSequence:registerWith(DeviceEventHandler, GShiftState, Pseudo_Tab_Button_for_Alt_Tab, Pseudo_Tab_Button_for_Control_Tab)
 ControlTabSequence:registerWith(GShiftState, Pseudo_Tab_Button_for_Control_Tab, Pseudo_Tab_Button_for_Alt_Tab)
-MinimizeMap:registerWith(GShiftState, Minimize_Maximize_Button)
-MaximizeMap:registerWith(SecondShiftState, Minimize_Maximize_Button)
+App2TabSequence:registerWith(SecondShiftState, Scroll_Left_and_App_Tab_Button, Scroll_Right_and_App_Tab_Button)
+Minimize:registerWith(GShiftState, Minimize_Maximize_Button)
+Maximize:registerWith(SecondShiftState, Minimize_Maximize_Button)
 DeleteKeyMap:registerWith(GShiftState, Delete_Backspace_Button)
 BackspaceKeyMap:registerWith(SecondShiftState, Delete_Backspace_Button)
 GoUpKeyMap:registerWith(GShiftState, Wheel_Click_Button)
@@ -84,3 +92,5 @@ SpaceKeyMap:registerWith(SecondShiftState, Tab_Space_Button)
 PlaybackControlMap:registerWith(GShiftState, Playback_Control_Button)
 OpenKeyMap:registerWith(SecondShiftState, Playback_Control_Button)
 NewTabKeyMap:registerWith(DeviceEventHandler, GHubDefs.KeyPad[GHubDefs.UpperRow][GHubDefs.MiddleBackColumn])
+ScrollLeftMap:registerWith(GShiftState, Scroll_Left_and_App_Tab_Button)
+ScrollRightMap:registerWith(GShiftState, Scroll_Right_and_App_Tab_Button)
