@@ -24,6 +24,7 @@ local Volume_Up_and_End_Button		  = GHubDefs.KeyPad[GHubDefs.LowerRow ][GHubDefs
 local Redo_and_Page_Up_Button		  = GHubDefs.KeyPad[GHubDefs.UpperRow ][GHubDefs.MiddleFrontColumn]
 local Undo_and_Home_Button		  = GHubDefs.KeyPad[GHubDefs.UpperRow ][GHubDefs.MiddleBackColumn]
 local Back_and_Control_Tab_Button	  = Pseudo_Tab_Button_for_Control_Tab
+local Wheel_Click_Button		  = GHubDefs.MiddleButton
 
 local GShiftState        = ModifierState:new()
 local SecondShiftState   = ModifierState:new()
@@ -39,6 +40,8 @@ local RedoMap	         = OneShotMacroMap:new("Ctrl+Y")
 local AltTabSequence     = TabNavigationSequence:new(GHubDefs.ScanCodes.LeftAlt,     GHubDefs.ScanCodes.LeftShift, GHubDefs.ScanCodes.Tab)
 local ControlTabSequence = TabNavigationSequence:new(GHubDefs.ScanCodes.LeftControl, GHubDefs.ScanCodes.LeftShift, GHubDefs.ScanCodes.Tab)
 local GoBackKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftControl,  GHubDefs.ScanCodes.Minus)
+local SaveKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftControl, GHubDefs.ScanCodes.S)
+local GoToDefinitionMap  = DirectKeyMap:new(GHubDefs.ScanCodes.F12)
 
 GShiftState:registerWith(DeviceEventHandler, DeviceEventHandler, GHubDefs.GShiftButton)
 SecondShiftState:registerWith(DeviceEventHandler, GShiftState, GHubDefs.RightButton)
@@ -54,3 +57,5 @@ UndoMap:registerWith(GShiftState, Undo_and_Home_Button)
 RedoMap:registerWith(GShiftState, Redo_and_Page_Up_Button)
 AltTabSequence:registerWith(DeviceEventHandler, GShiftState, Pseudo_Tab_Button_for_Alt_Tab, Pseudo_Tab_Button_for_Control_Tab)
 ControlTabSequence:registerWith(GShiftState, Pseudo_Tab_Button_for_Control_Tab, Pseudo_Tab_Button_for_Alt_Tab)
+GoToDefinitionMap:registerWith(GShiftState, Wheel_Click_Button)
+SaveKeyMap:registerWith(SecondShiftState, Wheel_Click_Button)
