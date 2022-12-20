@@ -19,7 +19,6 @@ template <typename FunctionT, typename... ArgsT>
 template <typename FunctionT, typename... ArgsT>
     std::invoke_result_t<FunctionT, ArgsT...> silent_api_call(FunctionT fn, ArgsT... args);
 
-char const *find_hid_dev(char *path, char const *suffix);
 void expand_file_glob(std::string &file_glob);
 
 class DeviceFD

@@ -1,6 +1,10 @@
 local buttonStateTable = { }
 local mod = BaseHandlerTable:new(buttonStateTable)
 
+-- DeviceEventHandler is used to implement the global OnEvent() function, and receives all possible input events from the HID device (mouse / keyboard).
+-- Maintains the global buttonStateTable, that is shared by all the handlers throughout the code as the first argument in their invocation.
+-- Pre-registers handlers for button pressed and released events (for all buttons), that dispatch the two events to per-button handlers.
+
 mod.buttonDownEventTable = BaseHandlerTable:new(buttonStateTable)
 mod.buttonUpEventTable   = BaseHandlerTable:new(buttonStateTable)
 

@@ -253,7 +253,7 @@ catch (SyntaxError const &)
     cerr << "Syntax:\n";
     cerr << "\t" << argv[0] << " [--config /etc/local/KeyMapper/KeyMapper.conf]\n";
     cerr << endl;
-    cerr << "Run script file with macros and key mappings for HID input device." << endl;
+    cerr << "Run script file with macros and key mappings for a HID input device." << endl;
 
     return 255;
 }

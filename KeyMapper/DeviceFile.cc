@@ -3,7 +3,6 @@
 #include <glob.h>
 
 #include <cstdlib>
-#include <cstring>
 #include <string>
 #include <system_error>
 #include <memory>
@@ -18,31 +17,6 @@ using std::cout;
 using std::char_traits;
 using std::unique_ptr;
 using std::string;
-
-static int starts_with(char const *haystack, char const *prefix)
-{
-  size_t
-      prefix_length = char_traits<char>::length(prefix),
-      haystack_length = char_traits<char>::length(haystack);
-
-  if (haystack_length < prefix_length)
-      return 0;
-
-  return strncmp(prefix, haystack, prefix_length) == 0;
-}
-
-static int ends_with(char const *haystack, char const *suffix)
-{
-  size_t
-      suffix_length = char_traits<char>::length(suffix),
-      haystack_length = char_traits<char>::length(haystack);
-
-  if (haystack_length < suffix_length)
-      return 0;
-
-  char const *haystack_end = haystack + haystack_length - suffix_length;
-  return strncmp(suffix, haystack_end, suffix_length) == 0;
-}
 
 void expand_file_glob(string &file_glob)
 {
@@ -87,29 +61,6 @@ void expand_file_glob(string &file_glob)
     }
 }
 
-char const *find_hid_dev(char *path, char const *kDir, char const *kPrefix, char const *suffix)
-{
-    unique_ptr<DIR, int (*)(DIR *p)>
-	dir(check_call(opendir, kDir), [](DIR *p) { return silent_api_call(closedir, p); });
-
-    errno = 0;
-
-    while (struct dirent *ent = readdir(dir.get()))
-	if (starts_with(ent->d_name, kPrefix) && ends_with(ent->d_name, suffix))
-	{
-	    strcpy(path, kDir);
-	    strcat(path, ent->d_name);
-
-	    cout << "full path is " << path << endl;
-
-	    return path;
-	}
-
-    int err = errno;
-
-    throw make_error_code(static_cast<errc>(err ? err : ENODEV));
-}
-
 DeviceFD::DeviceFD(char const *device_file)
 {
   char path[1024];
@@ -121,7 +72,7 @@ DeviceFD::DeviceFD(char const *device_file)
     auto local_error_code = make_error_code(static_cast<errc>(errno));
 
     cout << "Error: Couldn't open \"" << path << "\" for reading.\n";
-    cout << "Reason: "<< strerror(errno) << '.' << endl;
+    cout << "Reason: "<< local_error_code.message() << '.' << endl;
     cout << "Suggestion: Maybe a permission is missing. Try running this program with with sudo.\n";
 
     throw local_error_code;
