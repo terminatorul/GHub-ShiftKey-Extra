@@ -60,8 +60,8 @@ local NewTabKeyMap	 = OneShotKeyCombinationMap:new(GHubDefs.ScanCodes.LeftContro
 local TabKeyMap		 = DirectKeyMap:new(GHubDefs.ScanCodes.Tab)
 local SpaceKeyMap	 = DirectKeyMap:new(GHubDefs.ScanCodes.Spacebar)
 local PlaybackControlMap = DirectMacroMap:new("Play Pause")
-local ScrollLeftMap	 = DirectMacroMap:new("Repeat Scroll Left")
-local ScrollRightMap	 = DirectMacroMap:new("Repeat Scroll Right")
+local ScrollLeftMap	 = DirectMacroMap:new("Scroll Left")
+local ScrollRightMap	 = DirectMacroMap:new("Scroll Right")
 
 GShiftState:registerWith(DeviceEventHandler, DeviceEventHandler, GHubDefs.GShiftButton)
 SecondShiftMap:registerWith(DeviceEventHandler, Second_Shift_Button)
