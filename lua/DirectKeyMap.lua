@@ -1,6 +1,16 @@
 local mod = { }
 
 function mod:onButtonPressed()
+    if self.modifierScanCode
+    then
+	PressKey(self.modifierScanCode)
+    end
+
+    if self.nestedModifierScanCode
+    then
+	PressKey(self.nestedModifierScanCode)
+    end
+
     PressKey(self.keyScanCode)
     self.keyDown = true
 end
@@ -10,6 +20,16 @@ function mod:onButtonReleased()
     then
 	ReleaseKey(self.keyScanCode)
 	self.keyDown = false
+
+	if self.nestedModifierScanCode
+	then
+	    ReleaseKey(self.nestedModifierScanCode)
+	end
+
+	if self.modifierScanCode
+	then
+	    ReleaseKey(self.modifierScanCode)
+	end
     end
 end
 
@@ -18,11 +38,21 @@ function mod:onControllingModifierReleased()
     then
 	ReleaseKey(self.keyScanCode)
 	self.keyDown = false
+
+	if self.nestedModifierScanCode
+	then
+	    ReleaseKey(self.nestedModifierScanCode)
+	end
+
+	if self.modifierScanCode
+	then
+	    ReleaseKey(self.modifierScanCode)
+	end
     end
 end
 
-function mod:new(targetKeyScanCode)
-    local object = { keyScanCode = targetKeyScanCode, keyDown = false }
+function mod:new(targetKeyScanCode, targetNestedModifierScanCode, targetModifierScanCode)
+    local object = { keyScanCode = targetKeyScanCode, nestedModifierScanCode = targetNestedModifierScanCode, modifierScanCode = targetModifierScanCode, keyDown = false }
     setmetatable(object, self)
     self.__index = self
     return object
