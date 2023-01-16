@@ -53,6 +53,21 @@ mod.MouseButtonLocation =
     X2	    = 5
 }
 
+mod.Modifier =
+{
+    LeftAlt  = "lalt",
+    RightAlt = "ralt",
+    Alt	     = "alt",
+
+    LeftShift  = "lshift",
+    RightShift = "rshift",
+    Shift      = "shift",
+
+    LeftControl  = "lctrl",
+    RightControl = "rctrl",
+    Control      = "ctrl"
+}
+
 mod.KeyPad =
 {
     [mod.UpperRow]  = { [mod.FrontColumn] = mod.G11, [mod.MiddleFrontColumn] = mod.G14, [mod.MiddleBackColumn] = mod.G17, [mod.BackColumn] = mod.G20 },
