@@ -2,10 +2,10 @@ local mod = { }
 
 -- A HandlerTable identifies groups of handlers by the group index. Within the group two ordered lists of handlers are maintained:
 --	- main handlers are invoked in the order they are registered, and their result is ignored
---	- override handlers are invoked in the reverse order of registration (last handler has highest precedence),  are always invoked before the main
+--	- override handlers are invoked in the reverse order of registration (last handler has highest precedence), are always invoked before the main
 --	  handlers, and they can return false to prevent invocation of any remaining handlers
 --
--- A handlers is defined as a pair of object and associated method. The first argument to any handler invocation is given at the table construction time
+-- A handler is defined as a pair of an object and an associated method. The first argument to any handler invocation is given at the table construction time
 -- (as the buttonStateTable argument).
 --
 -- Invoking the registered handlers in a group is done by the group index, and all invocation arguments are passed to all groupp handlers, after the
@@ -51,6 +51,17 @@ function mod:registerHandlerOverride(index, handlerObject, handlerMethod)
     end
 end
 
+function getTableSize(table)
+    local i = 1
+
+    while table[i]
+    do
+	i = i + 1
+    end
+
+    return i - 1
+end
+
 function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
     local handler = self[index]
     if handler
@@ -63,7 +74,7 @@ function mod:invokeHandler(index, arg1, arg2, arg3, arg4, arg5)
 
 	    while handler.overrideMethod[i] and handler.overrideMethod[i](handler.overrideObject[i], self.buttonStateTable, arg1, arg2, arg3, arg4, arg5)
 	    do
-		i = i + 1;
+		i = i + 1
 	    end
 
 	    nextOverride = not handler.overrideMethod[i]

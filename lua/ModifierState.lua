@@ -1,12 +1,31 @@
 local mod = { }
 
+-- Implements a modifier key (Shift key) on the HID device. This will override previous handlers from DeviceEventHandler,
+-- so when a button is pressed with the modififer, it is detected and triggered before the ususal button handlers.
+--
+-- Exposes the following 3 handler tables that can be used to register new combinations with this modifier:
+--	- buttonDownEventTable
+--	- buttonDownEventTable
+--	- transitionEventTable
+--
+-- Combination buttons with this modifier have two more events, other then the usual onButtonPressed and onButtonReleased.
+-- The new events are:
+--	- onModifierPressed
+--	- onModifierReleased
+-- This can be uzsed to handle the use case when the modifier is released before the more specific button. The mapping
+-- for the button combination usually triggers the release sequence in this case, as if the specific button is released.
+--
+-- A modifier key can depend on another modifier key. Like saying Ctrl+Shift on a keyboard is a new modifier, that
+-- depends on the Ctrl modifier. In this case releasing the outer (independent) modifier will cause the dependent
+-- modifier to report a release event as well.
+
 function mod:onShiftKeyPressed(buttonStateTable)
     -- exit if any registered button is alreaady down, except buttons in the sequence start table
-    for k, v in pairs(self.buttonDownEventTable)
+    for buttonID, buttonHandlers in pairs(self.buttonDownEventTable)
     do
-	if self.buttonDownEventTable[k].overrideMethod or self.buttonDownEventTable[k].mainMethod
+	if buttonHandlers.overrideMethod or buttonHandlers.mainMethod
 	then
-	    if buttonStateTable[k] and not self.sequenceStartTable[k]
+	    if buttonStateTable[buttonID] and not self.sequenceStartTable[buttonID]
 	    then
 		return
 	    end

@@ -1,4 +1,11 @@
-local mod = { }
+local mod = { buttonUpEventTable = BaseHandlerTable:new(), buttonDownEventTable = BaseHandlerTable:new() }
+
+-- Override eventCategoryHandlers and directly map a key to a given button, after which the previous handlers are processed
+-- as usual. To override the category handlers call:
+--	- DirectKeyMapOverride:registerOverrides(eventCategoryHandlers)
+--
+-- at the right time, as the new handlers take priority over the existing handlers. To specify the button to override, call
+-- the :new() constructor with the key to be sent (triggered), and call :registerWith() to specify the underlaying button.
 
 function mod:onButtonPressed()
     if self.modifierScanCode
@@ -55,20 +62,37 @@ function mod:onControllingModifierReleased()
     end
 end
 
+function mod:onButtonPressedEventOverride(buttonStateTable, buttonID, arg1, arg2, arg3, arg4)
+    self.buttonDownEventTable:invokeHandler(buttonID, arg1, arg2, arg3, arg4)
+    return true
+end
+
+function mod:onButtonReleasedEventOverride(buttonStateTable, buttonID, arg1, arg2, arg3, arg4)
+    self.buttonUpEventTable:invokeHandler(buttonID, arg1, arg2, arg3, arg4)
+    return true
+end
+
+function mod:registerOverrides(eventCategoryHandlers)
+    eventCategoryHandlers:registerHandlerOverride(GHubDefs.MOUSE_BUTTON_PRESSED,  self, self.onButtonPressedEventOverride)
+    eventCategoryHandlers:registerHandlerOverride(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onButtonReleasedEventOverride)
+end
+
 function mod:new(targetKeyScanCode, targetNestedModifierScanCode, targetModifierScanCode)
     local object = { keyScanCode = targetKeyScanCode, nestedModifierScanCode = targetNestedModifierScanCode, modifierScanCode = targetModifierScanCode, keyDown = false }
+
     setmetatable(object, self)
     self.__index = self
+
     return object
 end
 
-function mod:registerWith(buttonEventHandlers, targetButton)
-    buttonEventHandlers.buttonDownEventTable:registerHandlerOverride(targetButton, self, self.onButtonPressed)
-    buttonEventHandlers.buttonUpEventTable:registerHandlerOverride(targetButton, self, self.onButtonReleased)
+function mod:registerWith(targetButton)
+    mod.buttonDownEventTable:registerHandlerOverride(targetButton, self, self.onButtonPressed)
+    mod.buttonUpEventTable:registerHandlerOverride(targetButton, self, self.onButtonReleased)
 
-    if buttonEventHandlers.transitionEventTable
+    if mod.transitionEventTable
     then
-	buttonEventHandlers.transitionEventTable:registerHandler(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onControllingModifierReleased)
+	mod.transitionEventTable:registerHandler(GHubDefs.MOUSE_BUTTON_RELEASED, self, self.onControllingModifierReleased)
     end
 end
 
