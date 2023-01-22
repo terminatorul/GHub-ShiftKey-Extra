@@ -61,7 +61,8 @@ local CtrlG19Action = DirectKeyWithModifierMap:new(GHubDefs.Modifier.Control, ni
 local CtrlG20Action = DirectKeyWithModifierMap:new(GHubDefs.Modifier.Control, nil, GHubDefs.ScanCodes.Equal,  GHubDefs.ScanCodes.LeftShift)
 
 GShiftState:registerWith(DeviceEventHandler, DeviceEventHandler, GHubDefs.GShiftButton)
-GShiftShiftMap:registerWith(DeviceEventHandler, GHubDefs.GShiftButton)
+GShiftShiftMap:registerWith(GHubDefs.GShiftButton)
+DirectKeyMapOverride:registerOverrides(DeviceEventHandler)
 
  G9Action:registerWith(DeviceEventHandler, GHubDefs.G9)
 G10Action:registerWith(DeviceEventHandler, GHubDefs.G10)
