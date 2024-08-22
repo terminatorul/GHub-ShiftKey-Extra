@@ -9,6 +9,8 @@
 ;   - send F24 on G-Shift key press
 ;   - send F23 on right-click (button 2) press
 
+A_MaxHotkeysPerInterval := 700
+
 global GShiftKeyPressed := GetKeyState("F24")
 global RightButtonPressed := GetKeyState("F23")
 
